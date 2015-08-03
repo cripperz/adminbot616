@@ -1,0 +1,9 @@
+username = "my_nickserv_username" # Type the username of the bot
+password = "my_nickserv_pass" # Type the password of the bot
+channels = "##goodperson,#goodperson" # Type the channels to join
+nick = "Goodperson" # Type the nick of the bot
+addrchar = "," # Type the charecter by with you want to address the bot
+server = "irc.freenode.net" # Type server
+owners = ['owner/cloak'] # Type the cloak or the hostname of the owner
+port = 6667 # Type the port to connect
+sudopassword = "mysudopassword" # Type the sudo password for the bot to run
