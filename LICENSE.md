@@ -1,6 +1,6 @@
 This software is licensed under the 2-clause Simplified BSD License. A copy of
 this license is provided below.
-Copyright (c) 2013, Jimmy Cao
+Copyright (c) 2015 noteness
 All rights reserved.
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
