@@ -29,6 +29,7 @@ import smtplib
 import random
 import sqlite3
 sudo_password=config.sudopassword
+homedir=config.userhome
 def ddeluser(user):
     try:
         conn = sqlite3.connect("./example.db")
@@ -92,10 +93,10 @@ def searchuser(user,nick):
             age = row[2]
             send("PRIVMSG %s :user=%s,name=%s,email=%s" % (nick,fname, lname, age ))
             
-def createUser(name,username,password,chann,nicc,email):
+def createUser(name,username,password,chann,nicc,email,homedir):
     encPass = crypt.crypt(password,"22")
     print "Making user"
-    command = "useradd -p "+encPass+ " -s "+ "/bin/bash "+ "-d "+ "/home/" + username+ " -m "+ " -c \""+ name+"\" " + username
+    command = "useradd -p "+encPass+ " -s "+ "/bin/bash "+ "-d "+ homedir + username+ " -m "+ " -c \""+ name+"\" " + username
     command = command.split()
     p = Popen(['sudo', '-S'] + command, stdin=PIPE, stderr=PIPE,
           universal_newlines=True)
@@ -231,7 +232,8 @@ def commands(nick,channel,message):
          return send("PRIVMSG %s :%s: adduser <name> <username> <email>. Get the <username> a shell, the password will be mailed to the <email>" % (channel,nick))
       if acco=="deluser":
          return send("PRIVMSG %s :%s: Deletes <user>" % (channel,nick))
-
+      if acco=="who":
+         return send("PRIVMSG %s :%s: messages you the information about the <user>" % (channel,nick))
    elif message.find(":"+addrchar+"adduser ")!=-1:
       acco=message.split(":"+addrchar+"adduser ") [1]
       accob = acco.split(" ")
@@ -243,10 +245,10 @@ def commands(nick,channel,message):
           
       except IndexError:
           return send("PRIVMSG %s :%s: name or username or email is missing" % (channel,nick))
-      createUser(name,username,password,channel,nick,email)
+      createUser(name,username,password,channel,nick,email,homedir)
       return send("PRIVMSG %s :%s: Your account has been created, check your email for instructions and password" % (channel,nick))
    elif message.find(':'+addrchar+'help')!=-1:
-      return send("PRIVMSG %s :%s: adduser <name> <username> <email>,  restriced commands are send , opme , op [<nick>] , deopme, deop [<nick>] , say <text> , do <text> , chgnick <nick> , restart , quit , topic <text> , deluser <user>" % (channel,nick))
+      return send("PRIVMSG %s :%s: adduser <name> <username> <email>,  restriced commands are send , opme , op [<nick>] , deopme, deop [<nick>] , say <text> , do <text> , chgnick <nick> , restart , quit , topic <text> , deluser <user> , who <user>" % (channel,nick))
 
    if cloak in ownercloak:
       if message.find(':'+addrchar+'quit')!=-1:
