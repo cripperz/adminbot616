@@ -38,7 +38,7 @@ def ddeluser(user):
         print "Connection not established"
         return "Blargh"
     
-    sql = "DELETE FROM users WHERE user='+%s'"% (user)
+    sql = "DELETE FROM users WHERE user='%s'"% (user)
     try:
        c.execute(sql)
        conn.commit()
