@@ -262,31 +262,33 @@ def commands(nick,channel,message):
           deluser(acco,channel,nick)
         except IndexError:
           return send("PRIVMSG %s :%s: name or username or email is missing" % (channel,nick))
+      if message.find(':'+addrchar+'gpull')!=-1:
+        Popen("git pull",shell=True)
       if message.find(':'+addrchar+'who ')!=-1:
          accon=message.rsplit(":"+addrchar+"who ") [1]
          searchuser(accon,nick)
       elif message.find(':'+addrchar+'say ')!=-1:
          accon=message.rsplit(":"+addrchar+"say ") [1]
          return send("PRIVMSG %s :%s\r" % (channel,accon))
-      if message.find(':'+addrchar+'opme')!=-1 and channel != botnick:
+      if message.find(':'+addrchar+'opme')!=-1 and channel != nick:
          send("MODE %s +o %s\r" % (channel,nick))
          send("CHANSERV :OP %s %s\r" % (channel,nick))
-      elif message.find(':'+addrchar+'op')!=-1 and channel != botnick:
+      elif message.find(':'+addrchar+'op')!=-1 and channel != nick:
          accon=message.rsplit(":"+addrchar+"op") [1]
          send("CHANSERV :OP %s %s\r" % (channel,accon))
          send("MODE %s +o %s\r" % (channel,accon))
 
-      elif message.find(':'+addrchar+'deopme')!=-1 and channel != botnick:
+      elif message.find(':'+addrchar+'deopme')!=-1 and channel != nick:
          send("CHANSERV :DEOP %s %s\r" % (channel,nick))
          send("MODE %s -o %s\r" % (channel,nick))
-      elif message.find(':'+addrchar+'deop')!=-1 and channel != botnick:
+      elif message.find(':'+addrchar+'deop')!=-1 and channel != nick:
          accon=message.rsplit(":"+addrchar+"deop") [1]
          send("CHANSERV :DEOP %s %s\r" % (channel,accon))
          send("MODE %s -o %s\r" % (channel,accon))
       elif message.find(':'+addrchar+'do ')!=-1:
          accon=message.rsplit(":"+addrchar+"do ") [1]
          send("PRIVMSG %s :ACTION %s \r" % (channel,accon))
-
+     
       elif message.find(':'+addrchar+'tstart')!=-1:
             thr.start()
       elif message.find(':'+addrchar+'tstop')!=-1:
@@ -379,6 +381,8 @@ while 1:
              acco = ircmsg.split("NICK ") [1]
              acco = acco.strip(":")
              botnick = acco
+         if channel == botnick:
+             channel = nick
     except IndexError:
         pass
 
