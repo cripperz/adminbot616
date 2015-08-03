@@ -15,3 +15,5 @@ You need Python 2.7 to run the bot
 copy `config.py.example` to `config.py` and make necessary changes.
 
 to run the bot, type `./bot.py` you can use `-v` or `--verbose` to see all IRC messages and `-c` or `--control` to send raw IRC commands from stdin aka the program itself 
+[1]: irc://irc.freenode.net/#adminbot
+[1]: irc://irc.freenode.net/#adminbot-dev
