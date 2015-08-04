@@ -32,9 +32,30 @@ sudo_password=config.sudopassword
 homedir=config.userhome
 host=config.hostname
 ssh_port=config.sshport
+def check_db():
+        try:
+            conn = sqlite3.connect("./example.db")
+            print "CONNECTION ESTABLISHED"
+            c = conn.cursor()
+        except:
+            print "Connection not established"
+            return "Blargh"
+    
+        sql = 'CREATE TABLE IF NOT EXISTS users (user text,name text,email text)'
+        try:
+           c.execute(sql)
+           conn.commit()
+           conn.close()
+           print 'VOILA'
+        except:
+           conn.rollback()
+           conn.close()
+           print 'NO VOILA'
+    
+        
 def ddeluser(user):
     try:
-        conn = sqlite3.connect("./example.db")
+        conn = sqlite3.connect("example.db")
         print "CONNECTION ESTABLISHED"
         c = conn.cursor()
     except:
@@ -54,7 +75,7 @@ def ddeluser(user):
 
 def dadduser(name,user,email):
     try:
-        conn = sqlite3.connect("./example.db")
+        conn = sqlite3.connect("example.db")
         print "CONNECTION ESTABLISHED"
         c = conn.cursor()
     except:
@@ -75,7 +96,7 @@ def dadduser(name,user,email):
        print 'no voila'
 def searchuser(user,nick):
     try:
-        conn = sqlite3.connect("./example.db")
+        conn = sqlite3.connect("example.db")
         print "CONNECTION ESTABLISHED"
         c = conn.cursor()
     except:
@@ -349,7 +370,7 @@ def func():
 thr = KThread(target=func)
 
 print "Starting Bot......"
-
+check_db()
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ircsock.connect((mserver, port)) 
 send("USER "+ botnick +" "+ botnick +" "+ botnick + " "+botnick) 
