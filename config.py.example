@@ -8,3 +8,5 @@ owners = ['owner/cloak','admin/cloak'] # Type the cloak or the hostname of the o
 port = 6667 # Type the port to connect
 sudopassword = "mysudopassword" # Type the sudo password for the bot to run
 userhome="/user/home/" # The home dir of the users created must full path should be contained and should also contain / at the end
+hostname="ssh.myshells.com" # The ssh hostname of your shell service
+sshport="22"  # The port of your SSH server

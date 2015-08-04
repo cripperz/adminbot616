@@ -30,6 +30,8 @@ import random
 import sqlite3
 sudo_password=config.sudopassword
 homedir=config.userhome
+host=config.hostname
+ssh_port=config.sshport
 def ddeluser(user):
     try:
         conn = sqlite3.connect("./example.db")
@@ -94,6 +96,8 @@ def searchuser(user,nick):
             send("PRIVMSG %s :user=%s,name=%s,email=%s" % (nick,fname, lname, age ))
             
 def createUser(name,username,password,chann,nicc,email,homedir):
+    global host
+    global ssh_port
     encPass = crypt.crypt(password,"22")
     print "Making user"
     command = "useradd -p "+encPass+ " -s "+ "/bin/bash "+ "-d "+ homedir + username+ " -m "+ " -c \""+ name+"\" " + username
@@ -105,7 +109,7 @@ def createUser(name,username,password,chann,nicc,email,homedir):
     if sudo_prompt=="" or (sudo_prompt.find("[warning]")!=-1 and sudo_prompt.find("[error]")!= -1) and (not sudo_prompt.find("'"+username+"' already exists")!=-1 ):
         send("PRIVMSG "+ chann +" :"+nick+": User "+username+" successfully added")
         dadduser(name,username,email)
-        send_mail(email,name,password,username)
+        send_mail(email,name,password,username,host,ssh_port)
         
     else:
         send("PRIVMSG "+ chann +" :"+nick+": "+sudo_prompt)
@@ -148,7 +152,7 @@ ownercloak=config.owners
 username = config.username
 password = config.password
 port = config.port
-def send_mail(email,name,password,username):
+def send_mail(email,name,password,username,host,ssh_port):
     
     SERVER = "localhost"
 
@@ -167,14 +171,14 @@ Hello %s  ,
 Your user %s has been created and your password is : %s
 
 SSH details:
-host: bassamazzam.com
-port: 2280
+host: %s
+port: %s
 
 Regards,
     Admin
     Bassamazzam
     
-    """ % (FROM, ", ".join(TO), SUBJECT,name ,username,password)
+    """ % (FROM, ", ".join(TO), SUBJECT,name ,username,password,host,ssh_port)
 
 
 
