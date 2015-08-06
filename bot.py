@@ -383,6 +383,8 @@ send("NICK "+ botnick )
 while 1:
     ircmsg = ircsock.recv(4096) 
     ircmsg = ircmsg.strip('\n\r')
+    ircmsg = ircmsg.strip('\n')
+    ircmsg = ircmsg.strip('\r')
     prmsg(ircmsg)
     try:
          if ircmsg.split(" ") [1].split(" ") [0] == 'PRIVMSG':
